@@ -1,0 +1,32 @@
+services:
+  cihuy-kanban-backend:
+    build:
+      context: ./backend
+    container_name: cihuy-kanban-backend
+    restart: unless-stopped
+    environment:
+      PORT: "${BACKEND_PORT:-3012}"
+      JWT_SECRET: "${JWT_SECRET:-change_this_on_server}"
+      TOKEN_EXPIRES_IN: "${TOKEN_EXPIRES_IN:-7d}"
+      FRONTEND_URL: "${FRONTEND_URL:-http://localhost:3011,http://127.0.0.1:3011}"
+      DB_PATH: /app/data/cihuy-kanban.db
+    volumes:
+      - cihuy-kanban-data:/app/data
+    ports:
+      - '${BACKEND_PORT:-3012}:3012'
+
+  cihuy-kanban-frontend:
+    build:
+      context: ./frontend
+      args:
+        VITE_API_URL: "${VITE_API_URL:-http://localhost:3012/api}"
+    container_name: cihuy-kanban-frontend
+    restart: unless-stopped
+    depends_on:
+      - cihuy-kanban-backend
+    ports:
+      - '${FRONTEND_PORT:-3011}:80'
+
+volumes:
+  cihuy-kanban-data:
+
