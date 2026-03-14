@@ -1,7 +1,7 @@
 services:
   cihuy-kanban-backend:
     build:
-      context: ./backend
+      context: ./cihuy-kanban/backend
     container_name: cihuy-kanban-backend
     restart: unless-stopped
     environment:
@@ -17,7 +17,7 @@ services:
 
   cihuy-kanban-frontend:
     build:
-      context: ./frontend
+      context: ./cihuy-kanban/frontend
       args:
         VITE_API_URL: "${VITE_API_URL:-http://localhost:3012/api}"
     container_name: cihuy-kanban-frontend
